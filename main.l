@@ -5,6 +5,7 @@ idChain *idList = new idChain;
 string result="";
 %}
 
+CONSTSTR               \"(\\.|[^"\\])*\"
 SIGN                   [-]?
 NUMBER                 {SIGN}[0-9]+
 SCANF                  scanf
@@ -57,6 +58,7 @@ OTHER                  .
 
 %%
 
+{CONSTSTR}            {result = result + "CONSTSTR            " + string(yytext) + '\n';}
 {SPACE}                     {/*Do nothing*/}
 {NUMBER}                {result = result + "NUMBER                " + string(yytext) + "     " + string(yytext) + '\n';}
 {SCANF}                    {result = result + "SCANF                    scanf\n";}
