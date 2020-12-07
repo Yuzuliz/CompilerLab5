@@ -49,42 +49,42 @@ while (B) {S}
 
 %%
 
-x         : Variable                        {$$ = new Node;$$->add_child($1);printf("@%d  variable varname:%s\n",$1->No,$1->value);}
+x         : Variable                        {$$ = new Node();$$->add_child($1);printf("@%d  variable varname:%s\n",$1->No,$1->value);}
             ;
 
-Expr  : x                                       {$$ = new Node;$$->add_child($1);printf("Expr:x\n");}
-            | SelfOp x                       {$$ = new Node;$$->add_child($1);$$->add_child($2);printf("SelfOp x\n");}
-            | x SelfOp                       {$$ = new Node;$$->add_child($1);$$->add_child($2);printf(" x SelfOp\n");}
-            | Num                              {$$ = new Node;$$->add_child($1);printf("Num %s\n",$1->value);}
-            | Expr AriOp Expr        {$$ =new Node;$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("Expr AriOp Expr     \n");}
+Expr  : x                                       {$$ = new Node();$$->add_child($1);printf("Expr:x\n");}
+            | SelfOp x                       {$$ = new Node();$$->add_child($1);$$->add_child($2);printf("SelfOp x\n");}
+            | x SelfOp                       {$$ = new Node();$$->add_child($1);$$->add_child($2);printf(" x SelfOp\n");}
+            | Num                              {$$ = new Node();$$->add_child($1);printf("Num %s\n",$1->value);}
+            | Expr AriOp Expr        {$$ =new Node();$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("Expr AriOp Expr     \n");}
             ;
 
-BExp : True                                {$$ = new Node;$$->add_child($1);printf("BExp : True \n");}
-            | False                              {$$ = new Node;$$->add_child($1);printf("False\n");}
-            | Expr CompOp Expr  {$$ = new Node;$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("Expr CompOp Expr      \n");}
-            | Not BExp                      {$$ = new Node;$$->add_child($1);$$->add_child($2);printf("Not BExp  \n");}
+BExp : True                                {$$ = new Node();$$->add_child($1);printf("BExp : True \n");}
+            | False                              {$$ = new Node();$$->add_child($1);printf("False\n");}
+            | Expr CompOp Expr  {$$ = new Node();$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("Expr CompOp Expr      \n");}
+            | Not BExp                      {$$ = new Node();$$->add_child($1);$$->add_child($2);printf("Not BExp  \n");}
             ;
 
-Instr  : Type x                             {$$ = new Node;$$->add_child($1);$$->add_child($2);printf("Type x  \n");}
-            | Type x Assign Expr    {$$ = new Node;$$->add_child($1);$$->add_child($2);$$->add_child($3);$$->add_child($4);printf("Type x Assign Expr Semicolon   \n");}
-            | x Assign Expr               {$$ = new Node;$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("x Assign Expr Semicolon\n");}
-            | x AriAOp Expr              {$$ = new Node;$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("x AriAOp Expr Semicolon\n");}
-            | Printf Lp Expr Rp        {$$ = new Node;$$->add_child($1);$$->add_child($3);printf("Printf Lp Expr Rp Semicolon \n");}
-            | Printf Lp BExp Rp       {$$ = new Node;$$->add_child($1);$$->add_child($3);printf("Printf Lp BExp Rp Semicolon\n");}
-            | Printf Lp String x Rp  {$$ = new Node;$$->add_child($1);$$->add_child($3);$$->add_child($4);printf("Printf ( String x )\n");}
-            | Scanf Lp String x Rp  {$$ = new Node;$$->add_child($1);$$->add_child($3);$$->add_child($4);printf("Scanf ( String x )\n");}
+Instr  : Type x                             {$$ = new Node();$$->add_child($1);$$->add_child($2);printf("Type x  \n");}
+            | Type x Assign Expr    {$$ = new Node();$$->add_child($1);$$->add_child($2);$$->add_child($3);$$->add_child($4);printf("Type x Assign Expr Semicolon   \n");}
+            | x Assign Expr               {$$ = new Node();$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("x Assign Expr Semicolon\n");}
+            | x AriAOp Expr              {$$ = new Node();$$->add_child($1);$$->add_child($2);$$->add_child($3);printf("x AriAOp Expr Semicolon\n");}
+            | Printf Lp Expr Rp        {$$ = new Node();$$->add_child($1);$$->add_child($3);printf("Printf Lp Expr Rp Semicolon \n");}
+            | Printf Lp BExp Rp       {$$ = new Node();$$->add_child($1);$$->add_child($3);printf("Printf Lp BExp Rp Semicolon\n");}
+            | Printf Lp String x Rp  {$$ = new Node();$$->add_child($1);$$->add_child($3);$$->add_child($4);printf("Printf ( String x )\n");}
+            | Scanf Lp String x Rp  {$$ = new Node();$$->add_child($1);$$->add_child($3);$$->add_child($4);printf("Scanf ( String x )\n");}
             ;
 
-Stmt  : Instr                                 {$$ = new Node;$$->add_child($1);printf("Stmt  : Instr\n");}
-            | If Lp BExp Rp Stmt Else Stmt        {$$ = new Node;$$->add_child($1);$$->add_child($3);$$->add_child($5);$$->add_child($6);$$->add_child($7);printf("If Lp BExp Rp Stmt ELSE Stmt\n");}
-            | While Lp BExp Rp Lb Stmts Rb       {$$ = new Node;$$->add_child($1);$$->add_child($3);$$->add_child($6);printf("While Lp BExp Rp Stmt Lb S Rb\n");}
+Stmt  : Instr                                 {$$ = new Node();$$->add_child($1);printf("Stmt  : Instr\n");}
+            | If Lp BExp Rp Stmt Else Stmt        {$$ = new Node();$$->add_child($1);$$->add_child($3);$$->add_child($5);$$->add_child($6);$$->add_child($7);printf("If Lp BExp Rp Stmt ELSE Stmt\n");}
+            | While Lp BExp Rp Lb Stmts Rb       {$$ = new Node();$$->add_child($1);$$->add_child($3);$$->add_child($6);printf("While Lp BExp Rp Stmt Lb S Rb\n");}
             ;
 
-Stmts : Stmt  Semicolon                             {$$ = new Node;$$->add_child($1);printf("Stmts : Stmt\n");}
-              | Stmt Semicolon Stmts                {$$ = new Node;$$->add_child($1);$$->add_child($3);printf("Stmt Semicolon Stmt\n");}
+Stmts : Stmt  Semicolon                             {$$ = new Node();$$->add_child($1);printf("Stmts : Stmt\n");}
+              | Stmt Semicolon Stmts                {$$ = new Node();$$->add_child($1);$$->add_child($3);printf("Stmt Semicolon Stmt\n");}
               ;
 
-Prog   : Stmts                                                    {$$ = new Node;$$->add_child($1);printf("Prog   : Stmts\n");}
+Prog   : Stmts                                                    {$$ = new Node();$$->add_child($1);printf("Prog   : Stmts\n");}
             ;                 
 
 %%

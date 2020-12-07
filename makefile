@@ -3,8 +3,8 @@ YACC=bison
 CC=g++
 OBJECT=main #生成的目标文件
  
-$(OBJECT): lex.yy.o  yacc.tab.o
-	$(CC) lex.yy.o yacc.tab.o -o $(OBJECT)
+$(OBJECT): lex.yy.o  main.tab.o
+	$(CC) lex.yy.o main.tab.o -o $(OBJECT)
 	@./$(OBJECT) #编译后立刻运行
  
 lex.yy.o: lex.yy.c  main.tab.h  main.h
