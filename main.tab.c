@@ -77,12 +77,12 @@
       return;
     }
     else{
-      cout << "@" << setw(3) << left << root->No  << "|" << setw(15) << left << root->value  << "|[";
+      cout << "@" << setw(3) << left << root->No  << "|" << setw(10) << left << root->type  << "|" << setw(30) << left << root->value  << "|[";
       //printf(s);
       for(Node *temp = root->child; temp ; temp = temp->bro){
         cout << "@" << temp->No << " ";
       }
-      cout <<"]" <<  endl;
+      cout <<"]      |" <<   root->convert << endl;
       for(Node *temp = root->child; temp ; temp = temp->bro){
         printTree(temp);
       }
@@ -522,10 +522,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   121,   121,   125,   126,   131,   132,   133,   134,   138,
-     139,   140,   144,   145,   146,   147,   148,   149,   150,   151,
-     152,   153,   157,   158,   159,   160,   164,   165,   166,   167,
-     168,   169,   170,   171,   175
+       0,   121,   121,   127,   128,   146,   147,   148,   149,   153,
+     154,   155,   159,   160,   161,   162,   163,   164,   165,   166,
+     167,   168,   172,   173,   174,   175,   179,   180,   181,   182,
+     183,   184,   185,   186,   190
 };
 #endif
 
@@ -1359,204 +1359,217 @@ yyreduce:
     {
         case 2:
 #line 121 "main.y" /* yacc.c:1646  */
-    {printf("Prog:Stmts --> ");::root = new Node;::root->set_value("program");::root->add_child((yyvsp[0]));::root->No = 0;printf("over\n");}
+    {::root = (yyvsp[0]);::root->set_type("program");::root->No=0;}
 #line 1364 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 125 "main.y" /* yacc.c:1646  */
-    {printf("Stmt --> ");(yyval) = (yyvsp[0]);(yyvsp[0])->set_value("statements");printf("over\n");}
+#line 127 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("statements");(yyval)->combined = 0;}
 #line 1370 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 126 "main.y" /* yacc.c:1646  */
-    {printf("Stmts Stmt --> ");Node *node = new Node;node->set_value("statements");node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1376 "main.tab.c" /* yacc.c:1646  */
+#line 128 "main.y" /* yacc.c:1646  */
+    {
+  if((yyvsp[-1])->combined){
+    (yyval) = (yyvsp[-1]);
+    (yyval)->add_child((yyvsp[0]));
+  }
+  else{
+    Node *node = new Node;
+    node->add_child((yyvsp[-1]));
+    node->add_child((yyvsp[0]));
+    node->set_type("statements");
+    node->combined = 1;
+    (yyval) = node;
+  }
+}
+#line 1389 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 131 "main.y" /* yacc.c:1646  */
-    {printf("Instr --> ");Node *node = new Node;node->set_value("statement");node->add_child((yyvsp[0]));printf("Stmt  : Instr\n");(yyval) = node;printf("over\n");}
-#line 1382 "main.tab.c" /* yacc.c:1646  */
+#line 146 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("statement");}
+#line 1395 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 132 "main.y" /* yacc.c:1646  */
-    {printf("if --> ");Node *node = new Node;node->set_value("statement");node->add_child((yyvsp[-4]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1388 "main.tab.c" /* yacc.c:1646  */
+#line 147 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-4]);(yyval)->set_type("statement");(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[0]));}
+#line 1401 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 133 "main.y" /* yacc.c:1646  */
-    {printf("if else --> ");Node *node = new Node;node->set_value("statement");node->add_child((yyvsp[-6]));node->add_child((yyvsp[-4]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1394 "main.tab.c" /* yacc.c:1646  */
+#line 148 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-6]);(yyval)->set_type("statement");(yyval)->add_child((yyvsp[-4]));(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1407 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 134 "main.y" /* yacc.c:1646  */
-    {printf("while --> ");Node *node = new Node;node->set_value("statement");node->add_child((yyvsp[-4]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[0]));printf("While Lp BExp Rp Stmt Lb S Rb\n");(yyval) = node;printf("over\n");}
-#line 1400 "main.tab.c" /* yacc.c:1646  */
+#line 149 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-4]);(yyval)->set_type("statement");(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[0]));}
+#line 1413 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 138 "main.y" /* yacc.c:1646  */
-    {printf("Stmt --> ");(yyval)=(yyvsp[0]);printf("over\n");}
-#line 1406 "main.tab.c" /* yacc.c:1646  */
+#line 153 "main.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[0]);}
+#line 1419 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 139 "main.y" /* yacc.c:1646  */
-    {printf("{...} --> ");(yyval)=(yyvsp[-1]);printf("over\n");}
-#line 1412 "main.tab.c" /* yacc.c:1646  */
+#line 154 "main.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[-1]);}
+#line 1425 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 140 "main.y" /* yacc.c:1646  */
-    {printf("{...\\n...} --> ");(yyval)=(yyvsp[-1]);printf("over\n");}
-#line 1418 "main.tab.c" /* yacc.c:1646  */
+#line 155 "main.y" /* yacc.c:1646  */
+    {(yyval)=(yyvsp[-1]);}
+#line 1431 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 144 "main.y" /* yacc.c:1646  */
-    {printf("int a --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1424 "main.tab.c" /* yacc.c:1646  */
+#line 159 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-1]));}
+#line 1437 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 145 "main.y" /* yacc.c:1646  */
-    {printf("int a=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-4]));node->add_child((yyvsp[-3]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1430 "main.tab.c" /* yacc.c:1646  */
+#line 160 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-4]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-3]));(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[-1]));}
+#line 1443 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 146 "main.y" /* yacc.c:1646  */
-    {printf("a=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-3]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1436 "main.tab.c" /* yacc.c:1646  */
+#line 161 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-3]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[-1]));}
+#line 1449 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 147 "main.y" /* yacc.c:1646  */
-    {printf("a+=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-3]));node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1442 "main.tab.c" /* yacc.c:1646  */
+#line 162 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-3]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-2]));(yyval)->add_child((yyvsp[-1]));}
+#line 1455 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 148 "main.y" /* yacc.c:1646  */
-    {printf("++a --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1448 "main.tab.c" /* yacc.c:1646  */
+#line 163 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-1]));}
+#line 1461 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 149 "main.y" /* yacc.c:1646  */
-    {printf("a++ --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));(yyval) = node;printf("over\n");}
-#line 1454 "main.tab.c" /* yacc.c:1646  */
+#line 164 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-1]));}
+#line 1467 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 150 "main.y" /* yacc.c:1646  */
-    {printf("printf(expr) --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-4]));node->add_child((yyvsp[-2]));(yyval) = node;printf("over\n");}
-#line 1460 "main.tab.c" /* yacc.c:1646  */
+#line 165 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-4]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-2]));}
+#line 1473 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 151 "main.y" /* yacc.c:1646  */
-    {printf("printf(bexp) --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-4]));node->add_child((yyvsp[-2]));(yyval) = node;printf("over\n");}
-#line 1466 "main.tab.c" /* yacc.c:1646  */
+#line 166 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-4]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-2]));}
+#line 1479 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 152 "main.y" /* yacc.c:1646  */
-    {printf("printf(s,x) --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-5]));node->add_child((yyvsp[-3]));node->add_child((yyvsp[-2]));(yyval) = node;printf("over\n");}
-#line 1472 "main.tab.c" /* yacc.c:1646  */
+#line 167 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-5]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-3]));(yyval)->add_child((yyvsp[-2]));}
+#line 1485 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 153 "main.y" /* yacc.c:1646  */
-    {printf("scanf(s,x) --> ");Node *node = new Node;node->set_value("instruction");node->add_child((yyvsp[-5]));node->add_child((yyvsp[-3]));node->add_child((yyvsp[-2]));(yyval) = node;printf("over\n");}
-#line 1478 "main.tab.c" /* yacc.c:1646  */
+#line 168 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-5]);(yyval)->set_type("instruction");(yyval)->add_child((yyvsp[-3]));(yyval)->add_child((yyvsp[-2]));}
+#line 1491 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 157 "main.y" /* yacc.c:1646  */
-    {printf("True --> ");Node *node = new Node;node->set_value("boolExpression");node->add_child((yyvsp[0]));printf("BExp : True \n");(yyval) = node;printf("over\n");}
-#line 1484 "main.tab.c" /* yacc.c:1646  */
+#line 172 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("BExp");}
+#line 1497 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 158 "main.y" /* yacc.c:1646  */
-    {printf("False --> ");Node *node = new Node;node->set_value("boolExpression");node->add_child((yyvsp[0]));printf("False\n");(yyval) = node;printf("over\n");}
-#line 1490 "main.tab.c" /* yacc.c:1646  */
+#line 173 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("BExp");}
+#line 1503 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 159 "main.y" /* yacc.c:1646  */
-    {printf("expr comp expr --> ");Node *node = new Node();node->set_value("boolExpression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1496 "main.tab.c" /* yacc.c:1646  */
+#line 174 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("BExp");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1509 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 160 "main.y" /* yacc.c:1646  */
-    {printf("!x\n");Node *node = new Node;node->set_value("boolExpression");node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));printf("Not BExp  \n");(yyval) = node;printf("over\n");}
-#line 1502 "main.tab.c" /* yacc.c:1646  */
+#line 175 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-1]);(yyval)->set_type("BExp");(yyval)->add_child((yyvsp[0]));printf("Not BExp  \n");}
+#line 1515 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 164 "main.y" /* yacc.c:1646  */
-    {printf("x --> ");(yyval)=(yyvsp[0]);printf("over\n");}
-#line 1508 "main.tab.c" /* yacc.c:1646  */
+#line 179 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("Expr");}
+#line 1521 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 165 "main.y" /* yacc.c:1646  */
-    {printf("1 --> ");(yyval)=(yyvsp[0]);printf("over\n");}
-#line 1514 "main.tab.c" /* yacc.c:1646  */
+#line 180 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("Expr");}
+#line 1527 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 166 "main.y" /* yacc.c:1646  */
-    {printf("'2' --> ");(yyval)=(yyvsp[0]);printf("over\n");}
-#line 1520 "main.tab.c" /* yacc.c:1646  */
+#line 181 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);(yyval)->set_type("Expr");}
+#line 1533 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 167 "main.y" /* yacc.c:1646  */
-    {printf("1+1 --> ");Node *node = new Node;node->set_value("expression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1526 "main.tab.c" /* yacc.c:1646  */
+#line 182 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("Expr");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1539 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 168 "main.y" /* yacc.c:1646  */
-    {printf("1-1 --> ");Node *node = new Node;node->set_value("expression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1532 "main.tab.c" /* yacc.c:1646  */
+#line 183 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("Expr");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1545 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 169 "main.y" /* yacc.c:1646  */
-    {printf("1*1 --> ");Node *node = new Node;node->set_value("expression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1538 "main.tab.c" /* yacc.c:1646  */
+#line 184 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("Expr");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1551 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 170 "main.y" /* yacc.c:1646  */
-    {printf("1/1 --> ");Node *node = new Node;node->set_value("expression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1544 "main.tab.c" /* yacc.c:1646  */
+#line 185 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("Expr");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1557 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 171 "main.y" /* yacc.c:1646  */
-    {printf("1 mod 1 --> ");Node *node = new Node;node->set_value("expression");node->add_child((yyvsp[-2]));node->add_child((yyvsp[-1]));node->add_child((yyvsp[0]));(yyval) = node;printf("over\n");}
-#line 1550 "main.tab.c" /* yacc.c:1646  */
+#line 186 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[-2]);(yyval)->set_type("Expr");(yyval)->add_child((yyvsp[-1]));(yyval)->add_child((yyvsp[0]));}
+#line 1563 "main.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 175 "main.y" /* yacc.c:1646  */
-    {printf("variable --> ");(yyval) = (yyvsp[0]);printf("over\n");}
-#line 1556 "main.tab.c" /* yacc.c:1646  */
+#line 190 "main.y" /* yacc.c:1646  */
+    {(yyval) = (yyvsp[0]);}
+#line 1569 "main.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1560 "main.tab.c" /* yacc.c:1646  */
+#line 1573 "main.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1784,7 +1797,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 179 "main.y" /* yacc.c:1906  */
+#line 194 "main.y" /* yacc.c:1906  */
 
 int main(){
   const char* sFile="./test/0.c";//打开要读取的文本文件
@@ -1801,11 +1814,9 @@ int main(){
 	yyparse();//使yacc开始读取输入和解析，它会调用lex的yylex()读取记号
 	puts(">>>end parsing<<<\n----------------------------------------------\n");
   printf("tree:\n");
-  cout << " No |" << setw(15) << left << "yacc type" << "|Child" << endl;
+  cout << " No |" << setw(10) << left << "yacc type" << "|" << setw(30) << left << "value" << "|" << setw(50) << left << "Child" << "|Convert" << endl;
   printTree(root);
   printf("End tree\n");
-
-  printTree2(0,root);
 	fclose(fp);
 	return 0;
 }

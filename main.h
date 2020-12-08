@@ -24,35 +24,37 @@ enum NodeType{
 class Node{
 public:
   int No;
-  NodeType type;
+  //NodeType typeEnum;
+  string type;
   string value;
+  string convert;
   Node* child;
   Node* bro;
-  Node(int t = 6, string v=""):No(-1),value(v),child(NULL),bro(NULL){
+  int combined;
+  Node(int t = 6, string v=""):No(-1),value(v),child(NULL),bro(NULL),combined(0){
     switch (t)
     {
     case 0:
-      type = KEYWORDS;
+      type = "keywords";
       break;
     case 1:
-      type = INT_DATA;
-      break;
     case 2:
-      type = STRING_DATA;
+      type = "const";
       break;
     case 3:
-      type = SIGN;
+      type = "sign";
       break;
     case 4:
-      type = OPERATOR;
+      type = "operator";
       break;
     case 5:
-      type = ID;
+      type = "Variable";
       break;    
     default:
-      type = UNREADABLE;
+      type = "UNREADABLE";
       break;
     };
+    convert = type;
   };
   void add_child(Node* c){
     if(child == NULL){
@@ -71,7 +73,11 @@ public:
   };
   void set_value(string s){
     value = s;
-  }
+  };
+  void set_type(string t){
+    type = t;
+    convert = t + "->" + convert;
+  };
 };
 
 #define YYSTYPE Node*

@@ -540,7 +540,7 @@ char *yytext;
   int next = 1;
 
   void set_No(Node* N){
-    if(N->type != SIGN && N->type != UNREADABLE){
+    if(N->type != "sign" && N->type != "UNREADABLE"){
       N->No = ::next;
       ::next++;
     }

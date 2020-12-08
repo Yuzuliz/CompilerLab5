@@ -12,12 +12,12 @@
       return;
     }
     else{
-      cout << "@" << setw(3) << left << root->No  << "|" << setw(15) << left << root->value  << "|[";
+      cout << "@" << setw(3) << left << root->No  << "|" << setw(10) << left << root->type  << "|" << setw(30) << left << root->value  << "|[";
       //printf(s);
       for(Node *temp = root->child; temp ; temp = temp->bro){
         cout << "@" << temp->No << " ";
       }
-      cout <<"]" <<  endl;
+      cout <<"]      |" <<   root->convert << endl;
       for(Node *temp = root->child; temp ; temp = temp->bro){
         printTree(temp);
       }
@@ -118,61 +118,76 @@
 
 %%
 Prog 
-: Stmts                          {printf("Prog:Stmts --> ");::root = new Node;::root->set_value("program");::root->add_child($1);::root->No = 0;printf("over\n");}
+: Stmts                                                        {::root = $1;::root->set_type("program");::root->No=0;}
+//Node *node = new Node;node->set_type("program");node->No = 0;node->add_child($1);::root = node;}
+//[@2 @3 @5 @8 @14 @18 @22 @26 @46 @48 @50 ]
 ;         
 
 Stmts 
-: Stmt                             {printf("Stmt --> ");$$ = $1;$1->set_value("statements");printf("over\n");}
-| Stmts Stmt                {printf("Stmts Stmt --> ");Node *node = new Node;node->set_value("statements");node->add_child($1);node->add_child($2);$$ = node;printf("over\n");}
+: Stmt                                                           {$$ = $1;$$->set_type("statements");$$->combined = 0;}
+| Stmts Stmt                                              {
+  if($1->combined){
+    $$ = $1;
+    $$->add_child($2);
+  }
+  else{
+    Node *node = new Node;
+    node->add_child($1);
+    node->add_child($2);
+    node->set_type("statements");
+    node->combined = 1;
+    $$ = node;
+  }
+}
 ;
 
 
 Stmt 
-: Instr                                 {printf("Instr --> ");Node *node = new Node;node->set_value("statement");node->add_child($1);printf("Stmt  : Instr\n");$$ = node;printf("over\n");}
-| If Lp BExp Rp Block                             {printf("if --> ");Node *node = new Node;node->set_value("statement");node->add_child($1);node->add_child($3);node->add_child($5);$$ = node;printf("over\n");}
-| If Lp BExp Rp Block Else Block       {printf("if else --> ");Node *node = new Node;node->set_value("statement");node->add_child($1);node->add_child($3);node->add_child($5);node->add_child($6);node->add_child($7);$$ = node;printf("over\n");}
-| While Lp BExp Rp Block       {printf("while --> ");Node *node = new Node;node->set_value("statement");node->add_child($1);node->add_child($3);node->add_child($5);printf("While Lp BExp Rp Stmt Lb S Rb\n");$$ = node;printf("over\n");}
+: Instr                                                           {$$ = $1;$$->set_type("statement");}
+| If Lp BExp Rp Block                             {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);}
+| If Lp BExp Rp Block Else Block       {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);$$->add_child($6);$$->add_child($7);}
+| While Lp BExp Rp Block                    {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);}
 ;
 
 Block 
-:Stmt                                 {printf("Stmt --> ");$$=$1;printf("over\n");}
-|Lb Stmts Rb                  {printf("{...} --> ");$$=$2;printf("over\n");}
-|Lb Stmt   Rb                  {printf("{...\\n...} --> ");$$=$2;printf("over\n");}
+:Stmt                                                           {$$=$1;}
+|Lb Stmts Rb                                            {$$=$2;}
+|Lb Stmt   Rb                                            {$$=$2;}
 ;
 
 Instr 
-: Type x Semicolon                              {printf("int a --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);$$ = node;printf("over\n");}
-| Type x Assign Expr Semicolon     {printf("int a=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);node->add_child($3);node->add_child($4);$$ = node;printf("over\n");}
-| x Assign Expr Semicolon                {printf("a=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| x AriAOp Expr Semicolon               {printf("a+=1 --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-|SelfOp x Semicolon                          {printf("++a --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);$$ = node;printf("over\n");}
-| x SelfOp Semicolon                         {printf("a++ --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($2);$$ = node;printf("over\n");}
-| Printf Lp Expr Rp Semicolon       {printf("printf(expr) --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($3);$$ = node;printf("over\n");}
-| Printf Lp BExp Rp Semicolon      {printf("printf(bexp) --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($3);$$ = node;printf("over\n");}
-| Printf Lp String x Rp Semicolon {printf("printf(s,x) --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($3);node->add_child($4);$$ = node;printf("over\n");}
-| Scanf Lp String x Rp Semicolon {printf("scanf(s,x) --> ");Node *node = new Node;node->set_value("instruction");node->add_child($1);node->add_child($3);node->add_child($4);$$ = node;printf("over\n");}
+: Type x Semicolon                              {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
+| Type x Assign Expr Semicolon      {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);$$->add_child($4);}
+| x Assign Expr Semicolon                {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);}
+| x AriAOp Expr Semicolon               {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);}
+|SelfOp x Semicolon                           {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
+| x SelfOp Semicolon                         {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
+| Printf Lp Expr Rp Semicolon        {$$ = $1;$$->set_type("instruction");$$->add_child($3);}
+| Printf Lp BExp Rp Semicolon       {$$ = $1;$$->set_type("instruction");$$->add_child($3);}
+| Printf Lp String x Rp Semicolon  {$$ = $1;$$->set_type("instruction");$$->add_child($3);$$->add_child($4);}
+| Scanf Lp String x Rp Semicolon  {$$ = $1;$$->set_type("instruction");$$->add_child($3);$$->add_child($4);}
 ;
 
 BExp 
-: True                                {printf("True --> ");Node *node = new Node;node->set_value("boolExpression");node->add_child($1);printf("BExp : True \n");$$ = node;printf("over\n");}
-| False                              {printf("False --> ");Node *node = new Node;node->set_value("boolExpression");node->add_child($1);printf("False\n");$$ = node;printf("over\n");}
-| Expr CompOp Expr  {printf("expr comp expr --> ");Node *node = new Node();node->set_value("boolExpression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| Not BExp                      {printf("!x\n");Node *node = new Node;node->set_value("boolExpression");node->add_child($1);node->add_child($2);printf("Not BExp  \n");$$ = node;printf("over\n");}
+: True                                                          {$$ = $1;$$->set_type("BExp");}
+| False                                                        {$$ = $1;$$->set_type("BExp");}
+| Expr CompOp Expr                            {$$ = $1;$$->set_type("BExp");$$->add_child($2);$$->add_child($3);}
+| Not BExp                                                {$$ = $1;$$->set_type("BExp");$$->add_child($2);printf("Not BExp  \n");}
 ;
 
 Expr  
-: x                                       {printf("x --> ");$$=$1;printf("over\n");}
-| Num                               {printf("1 --> ");$$=$1;printf("over\n");}
-| String                            {printf("'2' --> ");$$=$1;printf("over\n");}
-| Expr Plus Expr           {printf("1+1 --> ");Node *node = new Node;node->set_value("expression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| Expr Minus Expr        {printf("1-1 --> ");Node *node = new Node;node->set_value("expression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| Expr Mult Expr           {printf("1*1 --> ");Node *node = new Node;node->set_value("expression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| Expr Div Expr             {printf("1/1 --> ");Node *node = new Node;node->set_value("expression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
-| Expr Mod Expr          {printf("1 mod 1 --> ");Node *node = new Node;node->set_value("expression");node->add_child($1);node->add_child($2);node->add_child($3);$$ = node;printf("over\n");}
+: x                                                                 {$$ = $1;$$->set_type("Expr");}
+| Num                                                          {$$ = $1;$$->set_type("Expr");}
+| String                                                       {$$ = $1;$$->set_type("Expr");}
+| Expr Plus Expr                                      {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
+| Expr Minus Expr                                   {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
+| Expr Mult Expr                                      {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
+| Expr Div Expr                                        {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
+| Expr Mod Expr                                     {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
 ;
 
 x 
-: Variable                        {printf("variable --> ");$$ = $1;printf("over\n");}
+: Variable                                                   {$$ = $1;}
 ;
         
 
@@ -192,11 +207,9 @@ int main(){
 	yyparse();//使yacc开始读取输入和解析，它会调用lex的yylex()读取记号
 	puts(">>>end parsing<<<\n----------------------------------------------\n");
   printf("tree:\n");
-  cout << " No |" << setw(15) << left << "yacc type" << "|Child" << endl;
+  cout << " No |" << setw(10) << left << "yacc type" << "|" << setw(30) << left << "value" << "|" << setw(50) << left << "Child" << "|Convert" << endl;
   printTree(root);
   printf("End tree\n");
-
-  printTree2(0,root);
 	fclose(fp);
 	return 0;
 }
