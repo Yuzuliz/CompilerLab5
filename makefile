@@ -1,24 +1,23 @@
-LEX=flex
-YACC=bison
-CC=g++
-OBJECT=main #生成的目标文件
+LEX := flex
+YACC := bison
+CC := g++
+OBJECT := main
  
-$(OBJECT): lex.yy.o  main.tab.o
+$(OBJECT) : lex.yy.o main.tab.o main.h
 	$(CC) lex.yy.o main.tab.o -o $(OBJECT)
-	@./$(OBJECT) #编译后立刻运行
+	@./$(OBJECT)
  
-lex.yy.o: lex.yy.c  main.tab.h  main.h
+lex.yy.o : lex.yy.c  main.tab.h  main.h
 	$(CC) -c lex.yy.c
  
-yacc.tab.o: main.tab.c  main.h
+yacc.tab.o : main.tab.c  main.h
 	$(CC) -c main.tab.c
  
-main.tab.c  main.tab.h: main.y
-# bison使用-d参数编译.y文件
+main.tab.c main.tab.h : main.y main.h
 	$(YACC) -d main.y
  
-lex.yy.c: main.l
+lex.yy.c : main.l main.h
 	$(LEX) main.l
  
 clean:
-	@rm -f $(OBJECT)  *.o
+	@rm -f $(OBJECT) *.o ：

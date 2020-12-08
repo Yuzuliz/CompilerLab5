@@ -1,4 +1,5 @@
 #include <iostream>//使用C++库
+#include <iomanip>
 #include <stdio.h>//printf和FILE要用的
 using namespace std;
 //#ifndef _GLBCXX_USE_CXX11_ABI
@@ -9,12 +10,6 @@ using namespace std;
 yylval是用YYSTYPE宏定义的，只要重定义YYSTYPE宏，就能重新指定yylval的类型(可参见yacc自动生成的头文件yacc.tab.h)。
 在我们的例子里，当识别出标识符后要向yacc传递这个标识符串，yylval定义成整型不太方便(要先强制转换成整型，yacc里再转换回char*)。
 这里把YYSTYPE重定义为struct Type，可存放多种信息*/
-struct Type//通常这里面每个成员，每次只会使用其中一个，一般是定义成union以节省空间(但这里用了string等复杂类型造成不可以)
-{
-	string m_sId;
-	int m_nInt;
-	char m_cOp;
-};
 
 enum NodeType{
   KEYWORDS,
@@ -26,8 +21,6 @@ enum NodeType{
   UNREADABLE
 };
 
-extern int next = 0;
-
 class Node{
 public:
   int No;
@@ -35,8 +28,7 @@ public:
   string value;
   Node* child;
   Node* bro;
-  Node(int t = 6, string v=""){
-    No = -1;
+  Node(int t = 6, string v=""):No(-1),value(v),child(NULL),bro(NULL){
     switch (t)
     {
     case 0:
@@ -61,27 +53,25 @@ public:
       type = UNREADABLE;
       break;
     };
-    if(type == KEYWORDS || type == INT_DATA || type == STRING_DATA || type == ID){
-      No = ::next;
-      ::next++;
-    }
-    value = v;
-    child = NULL;
-    bro = NULL;
   };
   void add_child(Node* c){
     if(child == NULL){
       child = c;
-      if(type == UNREADABLE){
+      /*if(type == UNREADABLE){
         No = c->No;
+      }*/
+    }
+    else{
+      Node* temp;
+      for(temp = child ; temp->bro != NULL && temp ; temp = temp->bro);
+      if(temp && !temp->bro){
+        temp->bro = c;
       }
     }
-    Node* temp;
-    for(temp = child ; temp->bro != NULL && temp ; temp = temp->bro);
-    if(temp && !temp->bro){
-      temp->bro = c;
-    }
   };
+  void set_value(string s){
+    value = s;
+  }
 };
 
 #define YYSTYPE Node*
