@@ -5,8 +5,9 @@
     extern int yylex(void);
   };
   Node* root;
+  int index=1;
 
-  void printTree(Node *root){
+  void printTree(Node *root,ofstream& outfile){
     if(root == NULL){
       printf("it's an empty tree!\n");
       return;
@@ -17,9 +18,16 @@
       for(Node *temp = root->child; temp ; temp = temp->bro){
         cout << "@" << temp->No << " ";
       }
-      cout <<"]      |" <<   root->convert << endl;
+      cout <<"]" << endl;
+      outfile << "@" << setw(3) << left << root->No  << "|" << setw(10) << left << root->type  << "|" << setw(30) << left << root->value  << "|[";
+      //printf(s);
       for(Node *temp = root->child; temp ; temp = temp->bro){
-        printTree(temp);
+        outfile << "@" << temp->No << " ";
+      }
+      outfile <<"]" << endl;
+      
+      for(Node *temp = root->child; temp ; temp = temp->bro){
+        printTree(temp,outfile);
       }
     }
   };
@@ -64,6 +72,19 @@
     for(j ; j < num ; j++){
       printTree2(i+1,temp);
       temp = temp->bro;
+    }
+  };
+
+  void setNo(Node *node,int i){
+    node->No = i;
+  }
+  void order(Node *root){
+    for(Node *temp = root->child ; temp ; temp = temp->bro){
+      temp->No = ::index;
+      ::index++;
+    }
+    for(Node *temp = root->child ; temp ; temp = temp->bro){
+      order(temp);
     }
   }
   
@@ -124,7 +145,7 @@ Prog
 ;         
 
 Stmts 
-: Stmt                                                           {$$ = $1;$$->set_type("statements");$$->combined = 0;}
+: Stmt                                                           {$$ = $1;$$->combined = 0;}
 | Stmts Stmt                                              {
   if($1->combined){
     $$ = $1;
@@ -144,46 +165,208 @@ Stmts
 
 Stmt 
 : Instr                                                           {$$ = $1;$$->set_type("statement");}
-| If Lp BExp Rp Block                             {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);}
-| If Lp BExp Rp Block Else Block       {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);$$->add_child($6);$$->add_child($7);}
-| While Lp BExp Rp Block                    {$$ = $1;$$->set_type("statement");$$->add_child($3);$$->add_child($5);}
+| Type x Lp Rp Block                              {
+  Node *node = new Node;
+  node->set_type("statement-function");
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($5);
+  $$=node;}
+| If Lp BExp Rp Block                             {
+  Node *node = new Node;
+  node->set_type("statement-if");
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($5);
+  $$=node;}
+| If Lp BExp Rp Block Else Block       {
+  Node *node = new Node;
+  node->set_type("statement-if");
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($5);
+  node->add_child($6);
+  node->add_child($7);
+  $$=node;}
+| For Lp Instr BExp Instr Rp Block     {
+  Node *node = new Node;
+  node->set_type("statement-for");
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($4);
+  node->add_child($5);
+  node->add_child($7);
+  $$=node;}
+| While Lp BExp Rp Block                    {
+  Node *node = new Node;
+  node->set_type("statement-while");
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($5);
+  $$=node;}
 ;
 
 Block 
 :Stmt                                                           {$$=$1;}
-|Lb Stmts Rb                                            {$$=$2;}
-|Lb Stmt   Rb                                            {$$=$2;}
+| Lb Stmts Rb                                            {$$=$2;}
 ;
 
 Instr 
-: Type x Semicolon                              {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
-| Type x Assign Expr Semicolon      {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);$$->add_child($4);}
-| x Assign Expr Semicolon                {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);}
-| x AriAOp Expr Semicolon               {$$ = $1;$$->set_type("instruction");$$->add_child($2);$$->add_child($3);}
-|SelfOp x Semicolon                           {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
-| x SelfOp Semicolon                         {$$ = $1;$$->set_type("instruction");$$->add_child($2);}
-| Printf Lp Expr Rp Semicolon        {$$ = $1;$$->set_type("instruction");$$->add_child($3);}
-| Printf Lp BExp Rp Semicolon       {$$ = $1;$$->set_type("instruction");$$->add_child($3);}
-| Printf Lp String x Rp Semicolon  {$$ = $1;$$->set_type("instruction");$$->add_child($3);$$->add_child($4);}
-| Scanf Lp String x Rp Semicolon  {$$ = $1;$$->set_type("instruction");$$->add_child($3);$$->add_child($4);}
+: Type idList Semicolon                      {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->set_type("declaration");
+  $$ = node;
+}
+| x Assign Expr Semicolon                {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("calculation");
+  $$ = node;
+}
+| x AriAOp Expr Semicolon               {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("calculation");
+  $$ = node;
+}
+|SelfOp x Semicolon                          {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->set_type("calculation");
+  $$ = node;
+}
+| x SelfOp Semicolon                         {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->set_type("calculation");
+  $$ = node;
+}
+| Printf Lp Expr Rp Semicolon        {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($3);
+  node->set_type("instruction-printf");
+  $$ = node;
+}
+| Printf Lp BExp Rp Semicolon       {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($3);
+  node->set_type("instruction-printf");
+  $$ = node;
+}
+| Printf Lp String x Rp Semicolon  {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($4);
+  node->set_type("instruction-printf");
+  $$ = node;
+}
+| Scanf Lp String x Rp Semicolon  {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($3);
+  node->add_child($4);
+  node->set_type("instruction-scanf");
+  $$ = node;
+}
+;
+
+idList 
+: id                                                              {$$=$1;}
+| idList id                                                  {
+  if($1->combined){
+    $$ = $1;
+    $$->add_child($2);
+  }
+  else{
+    Node *node = new Node;
+    node->add_child($1);
+    node->add_child($2);
+    node->set_type("idList");
+    node->combined = 1;
+    $$ = node;
+  }
+}
+;
+
+id 
+: x                                                               {$$=$1;}
+| x Assign Expr                                      {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("Variable");
+  $$ = node;}
 ;
 
 BExp 
-: True                                                          {$$ = $1;$$->set_type("BExp");}
+: True                                                         {$$ = $1;$$->set_type("BExp");}
 | False                                                        {$$ = $1;$$->set_type("BExp");}
-| Expr CompOp Expr                            {$$ = $1;$$->set_type("BExp");$$->add_child($2);$$->add_child($3);}
-| Not BExp                                                {$$ = $1;$$->set_type("BExp");$$->add_child($2);printf("Not BExp  \n");}
+| Expr CompOp Expr                            {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("BExp");
+  $$ = node;}
+| Not BExp                                                {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->set_type("BExp");
+  $$ = node;}
 ;
 
 Expr  
 : x                                                                 {$$ = $1;$$->set_type("Expr");}
 | Num                                                          {$$ = $1;$$->set_type("Expr");}
 | String                                                       {$$ = $1;$$->set_type("Expr");}
-| Expr Plus Expr                                      {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
-| Expr Minus Expr                                   {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
-| Expr Mult Expr                                      {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
-| Expr Div Expr                                        {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
-| Expr Mod Expr                                     {$$ = $1;$$->set_type("Expr");$$->add_child($2);$$->add_child($3);}
+| Expr Plus Expr                                      {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("expression");
+  $$ = node;}
+| Expr Minus Expr                                   {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("expression");
+  $$ = node;}
+| Expr Mult Expr                                      {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("expression");
+  $$ = node;}
+| Expr Div Expr                                        {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("expression");
+  $$ = node;}
+| Expr Mod Expr                                     {
+  Node *node = new Node;
+  node->add_child($1);
+  node->add_child($2);
+  node->add_child($3);
+  node->set_type("expression");
+  $$ = node;}
 ;
 
 x 
@@ -193,7 +376,7 @@ x
 
 %%
 int main(){
-  const char* sFile="./test/0.c";//打开要读取的文本文件
+  const char* sFile="./test/1.c";//打开要读取的文本文件
 	FILE* fp=fopen(sFile, "r");
 	if(fp==NULL)
 	{
@@ -206,9 +389,12 @@ int main(){
 	printf("\n\n>>>begin parsing %s<<<\n\n", sFile);
 	yyparse();//使yacc开始读取输入和解析，它会调用lex的yylex()读取记号
 	puts(">>>end parsing<<<\n----------------------------------------------\n");
+  order(root);
   printf("tree:\n");
-  cout << " No |" << setw(10) << left << "yacc type" << "|" << setw(30) << left << "value" << "|" << setw(50) << left << "Child" << "|Convert" << endl;
-  printTree(root);
+  cout << " No |" << setw(10) << left << "yacc type" << "|" << setw(30) << left << "value" << "|" << setw(50) << left << "Child" << endl;
+  ofstream outfile("./test/1_result.txt",ios::app);
+  printTree(root,outfile);
+  outfile.close();
   printf("End tree\n");
 	fclose(fp);
 	return 0;
@@ -218,4 +404,3 @@ void yyerror(const char* s) {
 	fprintf (stderr , "Parse error : %s\n", s );
 	exit (1);
 }
-

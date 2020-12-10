@@ -1,4 +1,5 @@
-#include <iostream>//使用C++库
+#include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <stdio.h>//printf和FILE要用的
 using namespace std;
@@ -27,7 +28,6 @@ public:
   //NodeType typeEnum;
   string type;
   string value;
-  string convert;
   Node* child;
   Node* bro;
   int combined;
@@ -54,7 +54,6 @@ public:
       type = "UNREADABLE";
       break;
     };
-    convert = type;
   };
   void add_child(Node* c){
     if(child == NULL){
@@ -76,7 +75,6 @@ public:
   };
   void set_type(string t){
     type = t;
-    convert = t + "->" + convert;
   };
 };
 

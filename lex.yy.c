@@ -537,17 +537,8 @@ char *yytext;
     int yylex(void);
   }
 
-  int next = 1;
-
-  void set_No(Node* N){
-    if(N->type != "sign" && N->type != "UNREADABLE"){
-      N->No = ::next;
-      ::next++;
-    }
-  };
-
-#line 550 "lex.yy.c"
-#line 551 "lex.yy.c"
+#line 541 "lex.yy.c"
+#line 542 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -764,10 +755,10 @@ YY_DECL
 		}
 
 	{
-#line 75 "main.l"
+#line 66 "main.l"
 
 
-#line 771 "lex.yy.c"
+#line 762 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -827,277 +818,277 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 77 "main.l"
+#line 68 "main.l"
 {/*Do nothing*/}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 78 "main.l"
+#line 69 "main.l"
 {/*Do nothing*/}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 79 "main.l"
+#line 70 "main.l"
 {/*Do nothing*/}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 80 "main.l"
-{Node *node = new Node(2,string(yytext));set_No(node);printf("CONSTSTR\n");yylval = node;return String;}
+#line 71 "main.l"
+{Node *node = new Node(2,string(yytext));printf("CONSTSTR\n");yylval = node;return String;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 81 "main.l"
-{Node *node = new Node(1,string(yytext));set_No(node);printf("NUMBER\n");yylval = node;return Num;}
+#line 72 "main.l"
+{Node *node = new Node(1,string(yytext));printf("NUMBER\n");yylval = node;return Num;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 82 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("SCANF\n");yylval = node;return Scanf;}
+#line 73 "main.l"
+{Node *node = new Node(0,string(yytext));printf("SCANF\n");yylval = node;return Scanf;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 83 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("PRINTF\n");yylval = node;return Printf;}
+#line 74 "main.l"
+{Node *node = new Node(0,string(yytext));printf("PRINTF\n");yylval = node;return Printf;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 84 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("RETURN\n");yylval = node;return Return;}
+#line 75 "main.l"
+{Node *node = new Node(0,string(yytext));printf("RETURN\n");yylval = node;return Return;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 85 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("WHILE\n");yylval = node;return While;}
+#line 76 "main.l"
+{Node *node = new Node(0,string(yytext));printf("WHILE\n");yylval = node;return While;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 86 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("IF\n");yylval = node;return If;}
+#line 77 "main.l"
+{Node *node = new Node(0,string(yytext));printf("IF\n");yylval = node;return If;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 87 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("ELSE\n");yylval = node;return Else;}
+#line 78 "main.l"
+{Node *node = new Node(0,string(yytext));printf("ELSE\n");yylval = node;return Else;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 88 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("SWITCH\n");yylval = node;return Switch;}
+#line 79 "main.l"
+{Node *node = new Node(0,string(yytext));printf("SWITCH\n");yylval = node;return Switch;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 89 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("FOR\n");yylval = node;return For;}
+#line 80 "main.l"
+{Node *node = new Node(0,string(yytext));printf("FOR\n");yylval = node;return For;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 90 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("BREAK\n");yylval = node;return Break;}
+#line 81 "main.l"
+{Node *node = new Node(0,string(yytext));printf("BREAK\n");yylval = node;return Break;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 91 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("CONTINUE\n");yylval = node;return Continue;}
+#line 82 "main.l"
+{Node *node = new Node(0,string(yytext));printf("CONTINUE\n");yylval = node;return Continue;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 92 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("DO\n");yylval = node;return Do;}
+#line 83 "main.l"
+{Node *node = new Node(0,string(yytext));printf("DO\n");yylval = node;return Do;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 93 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("INT\n");yylval = node;return Type;}
+#line 84 "main.l"
+{Node *node = new Node(0,string(yytext));printf("INT\n");yylval = node;return Type;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 94 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("CHAR\n");yylval = node;return Type;}
+#line 85 "main.l"
+{Node *node = new Node(0,string(yytext));printf("CHAR\n");yylval = node;return Type;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 95 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("FLOAT\n");yylval = node;return Type;}
+#line 86 "main.l"
+{Node *node = new Node(0,string(yytext));printf("FLOAT\n");yylval = node;return Type;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 96 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("DOUBLE\n");yylval = node;return Type;}
+#line 87 "main.l"
+{Node *node = new Node(0,string(yytext));printf("DOUBLE\n");yylval = node;return Type;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 97 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("VOID\n");yylval = node;return Type;}
+#line 88 "main.l"
+{Node *node = new Node(0,string(yytext));printf("VOID\n");yylval = node;return Type;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 98 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("CONST\n");yylval = node;return Type;}
+#line 89 "main.l"
+{Node *node = new Node(0,string(yytext));printf("CONST\n");yylval = node;return Type;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 99 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("TRUE\n");yylval = node;return True;}
+#line 90 "main.l"
+{Node *node = new Node(0,string(yytext));printf("TRUE\n");yylval = node;return True;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 100 "main.l"
-{Node *node = new Node(0,string(yytext));set_No(node);printf("FALSE\n");yylval = node;return False;}
+#line 91 "main.l"
+{Node *node = new Node(0,string(yytext));printf("FALSE\n");yylval = node;return False;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 101 "main.l"
-{Node *node = new Node(3,string(yytext));set_No(node);printf("LPAREN\n");yylval = node;return Lp;}
+#line 92 "main.l"
+{Node *node = new Node(3,string(yytext));printf("LPAREN\n");yylval = node;return Lp;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 102 "main.l"
-{Node *node = new Node(3,string(yytext));set_No(node);printf("RPAREN\n");yylval = node;return Rp;}
+#line 93 "main.l"
+{Node *node = new Node(3,string(yytext));printf("RPAREN\n");yylval = node;return Rp;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 103 "main.l"
-{Node *node = new Node(3,string(yytext));set_No(node);printf("LBRACE\n");yylval = node;return Lb;}
+#line 94 "main.l"
+{Node *node = new Node(3,string(yytext));printf("LBRACE\n");yylval = node;return Lb;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 104 "main.l"
-{Node *node = new Node(3,string(yytext));set_No(node);printf("RBRACE\n");yylval = node;return Rb;}
+#line 95 "main.l"
+{Node *node = new Node(3,string(yytext));printf("RBRACE\n");yylval = node;return Rb;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 105 "main.l"
-{Node *node = new Node(3,string(yytext));set_No(node);printf("SEMICOLON\n");yylval = node;return Semicolon;}
+#line 96 "main.l"
+{Node *node = new Node(3,string(yytext));printf("SEMICOLON\n");yylval = node;return Semicolon;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 106 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("EQ\n");yylval = node;return CompOp;}
+#line 97 "main.l"
+{Node *node = new Node(4,string(yytext));printf("EQ\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 107 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("NE\n");yylval = node;return CompOp;}
+#line 98 "main.l"
+{Node *node = new Node(4,string(yytext));printf("NE\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 108 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("LT\n");yylval = node;return CompOp;}
+#line 99 "main.l"
+{Node *node = new Node(4,string(yytext));printf("LT\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 109 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("GT\n");yylval = node;return CompOp;}
+#line 100 "main.l"
+{Node *node = new Node(4,string(yytext));printf("GT\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 110 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("LE\n");yylval = node;return CompOp;}
+#line 101 "main.l"
+{Node *node = new Node(4,string(yytext));printf("LE\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 111 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("GE\n");yylval = node;return CompOp;}
+#line 102 "main.l"
+{Node *node = new Node(4,string(yytext));printf("GE\n");yylval = node;return CompOp;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 112 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("AND\n");yylval = node;return And;}
+#line 103 "main.l"
+{Node *node = new Node(4,string(yytext));printf("AND\n");yylval = node;return And;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 113 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("OR\n");yylval = node;return Or;}
+#line 104 "main.l"
+{Node *node = new Node(4,string(yytext));printf("OR\n");yylval = node;return Or;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 114 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("NOT\n");yylval = node;return Not;}
+#line 105 "main.l"
+{Node *node = new Node(4,string(yytext));printf("NOT\n");yylval = node;return Not;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 115 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("ASSIGN\n");yylval = node;return Assign;}
+#line 106 "main.l"
+{Node *node = new Node(4,string(yytext));printf("ASSIGN\n");yylval = node;return Assign;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 116 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("PLUS\n");yylval = node;return Plus;}
+#line 107 "main.l"
+{Node *node = new Node(4,string(yytext));printf("PLUS\n");yylval = node;return Plus;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 117 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MINUS\n");yylval = node;return Minus;}
+#line 108 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MINUS\n");yylval = node;return Minus;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 118 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MULT\n");yylval = node;return Mult;}
+#line 109 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MULT\n");yylval = node;return Mult;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 119 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("DIV\n");yylval = node;return Div;}
+#line 110 "main.l"
+{Node *node = new Node(4,string(yytext));printf("DIV\n");yylval = node;return Div;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 120 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MOD\n");yylval = node;return Mod;}
+#line 111 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MOD\n");yylval = node;return Mod;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 121 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("INCRE\n");yylval = node;return SelfOp;}
+#line 112 "main.l"
+{Node *node = new Node(4,string(yytext));printf("INCRE\n");yylval = node;return SelfOp;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 122 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("DECRE\n");yylval = node;return SelfOp;}
+#line 113 "main.l"
+{Node *node = new Node(4,string(yytext));printf("DECRE\n");yylval = node;return SelfOp;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 123 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("PLUSA\n");yylval = node;return AriAOp;}
+#line 114 "main.l"
+{Node *node = new Node(4,string(yytext));printf("PLUSA\n");yylval = node;return AriAOp;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 124 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MINUSA\n");yylval = node;return AriAOp;}
+#line 115 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MINUSA\n");yylval = node;return AriAOp;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 125 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MULTA\n");yylval = node;return AriAOp;}
+#line 116 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MULTA\n");yylval = node;return AriAOp;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 126 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("DIVA\n");yylval = node;return AriAOp;}
+#line 117 "main.l"
+{Node *node = new Node(4,string(yytext));printf("DIVA\n");yylval = node;return AriAOp;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 127 "main.l"
-{Node *node = new Node(4,string(yytext));set_No(node);printf("MODA\n");yylval = node;return AriAOp;}
+#line 118 "main.l"
+{Node *node = new Node(4,string(yytext));printf("MODA\n");yylval = node;return AriAOp;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 128 "main.l"
-{Node *node = new Node(5,string(yytext));set_No(node);printf("ID\n");yylval = node;return Variable;}
+#line 119 "main.l"
+{Node *node = new Node(5,string(yytext));printf("ID\n");yylval = node;return Variable;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 129 "main.l"
+#line 120 "main.l"
 {}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 131 "main.l"
+#line 122 "main.l"
 ECHO;
 	YY_BREAK
-#line 1101 "lex.yy.c"
+#line 1092 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2102,7 +2093,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 131 "main.l"
+#line 122 "main.l"
 
 // idList
 /*string newId = string(yytext),index;if(newId[0]=='-')newId = newId.erase(0,1);result = result + "ID                    " + string(yytext);int i = idList->searchId(newId);index = to_string(i);result = result + "        " + index + '\n';*/
